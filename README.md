@@ -7,13 +7,13 @@ Simple music player that implement [Itunes API](https://affiliate.itunes.apple.c
 ## Features
 - Search
 - Play Indicator
-- Media Control
-    - Play/Pause
-    - Next
-    - Previous
-    - Auto next song after track finished
-    - Time indicator
-    - Seek time
+- Play/Pause
+- Next Song
+- Previous Song
+- Auto next song after track finished
+- Time indicator
+- Seek time
+- Still play current song even playlist changed
 
 ## Target SDK
 - This application can be run on SDK 21 (Android Lolipop) or above.
