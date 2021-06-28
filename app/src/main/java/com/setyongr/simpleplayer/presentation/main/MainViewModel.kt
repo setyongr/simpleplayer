@@ -33,6 +33,11 @@ class MainViewModel @Inject constructor(
     val timeInfo = mediaController.timeInfo.asLiveData(dispatcher.io())
     val searchTerm = _searchTermFlow.debounce(SEARCH_DEBOUNCE_TIME).asLiveData()
 
+    /**
+     * Fetch track from API with provided term
+     *
+     * @param term search term
+     */
     fun fetchTrack(term: String) = _fetchTrackLoad.loadData {
         searchTrackUseCase(term).collect {
             if (it is Load.Success) {
@@ -42,11 +47,19 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Play selected track
+     *
+     * @param track track that want to be played
+     */
     fun playTrack(track: TrackResult) {
         mediaController.setTrack(track)
         mediaController.play(true)
     }
 
+    /**
+     * Play / Pause currently played track
+     */
     fun playPause() {
         if (mediaController.mediaState.value is MediaState.Play) {
             mediaController.pause()
@@ -55,18 +68,34 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Next track
+     */
     fun next() {
         mediaController.next()
     }
 
+    /**
+     * Previous Track
+     */
     fun prev() {
         mediaController.prev()
     }
 
+    /**
+     * Set time position of currently played track
+     *
+     * @param position time position
+     */
     fun setPosition(position: Int) {
         mediaController.setPosition(position)
     }
 
+    /**
+     * Set search term that inserted by user
+     *
+     * @param searchTerm search term
+     */
     fun setSearchTerm(searchTerm: String) {
         _searchTermFlow.value = searchTerm
     }

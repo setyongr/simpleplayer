@@ -50,6 +50,9 @@ class MainActivity : AppCompatActivity() {
         observerRender()
     }
 
+    /**
+     * Setup search component
+     */
     private fun setupSearch() {
         binding.searchComponent.mutateState {
             onTextChanged = keyedHash {
@@ -62,6 +65,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Setup recycler view adapter and layout manager
+     */
     private fun setupRecyclerView() {
         binding.content.recyclerView.also {
             it.adapter = adapter
@@ -69,9 +75,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Setup Media Controller
+     */
     private fun setupMediaControlLayout() {
         val mediaControlComponent = binding.content.mediaControlComponent
 
+        // Observe media state to set visibility of media control and updating playing state
         viewModel.mediaState.observe(this) {
             mediaControlComponent.isVisible =
                 it is MediaState.Play || it is MediaState.Pause
@@ -81,6 +91,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Observe currently played timer
         viewModel.timeInfo.observe(this) {
             mediaControlComponent.mutateState {
                 maxProgress = it.duration
@@ -88,6 +99,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Setup listener
         mediaControlComponent.mutateState {
             onProgressChanged = keyedHash { progress ->
                 viewModel.setPosition(progress)
@@ -104,12 +116,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Observe event that trigger render
+     */
     private fun observerRender() {
         viewModel.fetchTrackLoad.observe(this) { renderContent() }
         viewModel.trackList.observe(this) { renderContent() }
         viewModel.currentItem.observe(this) { renderContent() }
     }
 
+    /**
+     * Render content inside recycler view
+     */
     private fun renderContent() = adapter.setItems {
         when (val it = viewModel.fetchTrackLoad.value) {
             is Load.Success -> {
@@ -127,6 +145,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Render track list
+     */
     private fun ComponentItems.renderTrack() {
         if (viewModel.trackList.value?.size == 0) {
             ::EmptyStateComponent.newItem(
@@ -150,10 +171,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Render loading component
+     */
     private fun ComponentItems.renderLoading() {
         ::LoadingComponent.newItem(ID_LOADING, Unit)
     }
 
+    /**
+     * Render failed / error state
+     */
     private fun ComponentItems.renderFail(err: Throwable) {
         ::EmptyStateComponent.newItem(
             ID_FAIL, EmptyStateComponent.State(

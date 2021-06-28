@@ -13,6 +13,9 @@ import com.setyongr.simpleplayer.core.KeyedHash
 import com.setyongr.simpleplayer.core.ui.MutableComponent
 import com.setyongr.simpleplayer.databinding.SearchComponentBinding
 
+/**
+ * Component that used for searching
+ */
 class SearchComponent @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), MutableComponent<SearchComponent.State> {

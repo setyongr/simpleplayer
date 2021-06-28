@@ -20,6 +20,9 @@ import com.setyongr.simpleplayer.databinding.MediaControlComponentBinding
 import com.setyongr.simpleplayer.databinding.SearchComponentBinding
 import com.setyongr.simpleplayer.domain.mediacontrol.MediaState
 
+/**
+ * Component that used to controlling media player
+ */
 class MediaControlComponent @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), MutableComponent<MediaControlComponent.State> {

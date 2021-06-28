@@ -14,6 +14,9 @@ import com.setyongr.simpleplayer.core.ui.MutableComponent
 import com.setyongr.simpleplayer.databinding.TrackComponentBinding
 import com.setyongr.simpleplayer.domain.model.TrackResult
 
+/**
+ * Component that represent music track
+ */
 class TrackComponent @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), Component<TrackComponent.State> {

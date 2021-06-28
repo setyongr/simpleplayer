@@ -9,12 +9,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
+/**
+ * Use case for searching track in itunes
+ */
 class SearchTrackUseCase @Inject constructor(
     private val itunesRepository: ItunesRepository
 ) {
     operator fun invoke(term: String): Flow<Load<List<TrackResult>>> {
         return flow {
             emit(Load.Loading)
+            // try loading from network
             tryNetwork(
                 block = {
                     val data = itunesRepository.search(term, MUSIC_MEDIA).mapToTrackResult()

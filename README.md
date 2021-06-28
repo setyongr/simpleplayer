@@ -18,14 +18,6 @@ Simple music player that implement [Itunes API](https://affiliate.itunes.apple.c
 ## Target SDK
 - This application can be run on SDK 21 (Android Lolipop) or above.
 
-## 3rd Party Library
-- Android Material
-- Glide
-- Retrofit
-- Moshi
-- Hilt
-- Kotlin Coroutine
-
 ## Architecture
 We use MVVM for presentation layer
 
@@ -45,6 +37,19 @@ Structure for this project
     - model : Model that represent data in each cases
 - presentation : Responsible to interacting with user
     - component : Centralized component directory, where all reusable component stored
+
+## 3rd Party Library
+- Android Material
+- Glide
+- Retrofit
+- Moshi
+- Hilt
+- Kotlin Coroutine
+
+## How to Build
+- Open with Android Studio
+- Build the app
+
 
 ## ComponentAsyncAdapter and Component Concept
 

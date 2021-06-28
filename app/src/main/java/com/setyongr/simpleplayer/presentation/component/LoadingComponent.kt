@@ -8,6 +8,9 @@ import android.widget.FrameLayout
 import com.setyongr.simpleplayer.core.ui.Component
 import com.setyongr.simpleplayer.databinding.LoadingComponentBinding
 
+/**
+ * Component that represent loading
+ */
 class LoadingComponent @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr), Component<Unit> {
