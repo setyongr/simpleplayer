@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutMediaControl"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_search"
+    android:padding="@dimen/space_16">
+
+    <ImageView
+        android:id="@+id/ivPrev"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_baseline_skip_previous_24"
+        app:layout_constraintEnd_toStartOf="@+id/ivPlayPause"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivPlayPause"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_baseline_play_arrow_24"
+        app:layout_constraintEnd_toStartOf="@+id/ivNext"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ivPrev"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivNext"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_baseline_skip_next_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ivPlayPause"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_8"
+        android:max="100"
+        android:progress="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivPlayPause" />
+</androidx.constraintlayout.widget.ConstraintLayout>
