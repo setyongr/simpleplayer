@@ -10,7 +10,7 @@ fun ItunesResponse.mapToTrackResult(): List<TrackResult> {
             artistName = it.artistName ?: "",
             trackName = it.trackName ?: "",
             collectionName = it.collectionName ?: "",
-            artworkUrl100 = it.artworkUrl100 ?: "",
+            artworkUrl100 = it.artworkUrl100,
             previewUrl = it.previewUrl ?: ""
         )
     }

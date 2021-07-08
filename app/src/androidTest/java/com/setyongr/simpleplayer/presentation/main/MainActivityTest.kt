@@ -1,7 +1,7 @@
 package com.setyongr.simpleplayer.presentation.main
 
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.IdlingPolicies
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.replaceText
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -13,29 +13,24 @@ import com.setyongr.simpleplayer.data.model.ItunesResponse
 import com.setyongr.simpleplayer.data.model.ItunesResultResponse
 import com.setyongr.simpleplayer.data.repository.ItunesRepository
 import com.setyongr.simpleplayer.di.DataModule
-import com.setyongr.simpleplayer.di.MediaModule
-import com.setyongr.simpleplayer.domain.mediacontrol.MediaController
-import com.setyongr.simpleplayer.utils.waitUntilViewIsDisplayed
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import org.hamcrest.Matchers.allOf
 import org.junit.Before
-
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Rule
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.CountDownLatch
 
 @UninstallModules(
     value = [DataModule::class]
 )
 @HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
 class MainActivityTest {
 
     @get:Rule
@@ -63,7 +58,7 @@ class MainActivityTest {
             artistName = "mock name",
             trackName = "mock track",
             collectionName = "mock collection",
-            artworkUrl100 = "https://aa.com",
+            artworkUrl100 = null,
             previewUrl = "https://aa.com"
         )
         val mockResponse = ItunesResponse(
@@ -74,10 +69,15 @@ class MainActivityTest {
         )
 
         // do search
-        coEvery { itunesRepository.search(any(), any()) } returns mockResponse
+        coEvery { itunesRepository.search(any(), any()) } answers {
+            if (firstArg<String>() == mockTerm) mockResponse
+            else ItunesResponse(0, emptyList())
+        }
+
         onView(withId(R.id.editSearch)).perform(click(), replaceText(mockTerm))
 
         // check result list
+        waitForRecyclerViewChanged()
         onView(
             allOf(
                 withId(R.id.tvSongName),
@@ -98,5 +98,44 @@ class MainActivityTest {
                 withText(mockResult.collectionName)
             )
         ).check(matches(isDisplayed()))
+    }
+
+    private fun waitForRecyclerViewChanged() {
+        val latch = CountDownLatch(1)
+        activityRule.scenario.onActivity {
+            val rv = it.findViewById<RecyclerView>(R.id.recyclerView)
+            rv.itemAnimator = null
+            rv.adapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+                override fun onChanged() {
+                    super.onChanged()
+                    latch.countDown()
+                }
+                override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+                    super.onItemRangeChanged(positionStart, itemCount)
+                    latch.countDown()
+                }
+
+                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                    super.onItemRangeInserted(positionStart, itemCount)
+                    latch.countDown()
+                }
+
+                override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                    super.onItemRangeRemoved(positionStart, itemCount)
+                    latch.countDown()
+                }
+
+                override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+                    super.onItemRangeMoved(fromPosition, toPosition, itemCount)
+                    latch.countDown()
+                }
+
+                override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {
+                    super.onItemRangeChanged(positionStart, itemCount, payload)
+                    latch.countDown()
+                }
+            })
+        }
+        latch.await()
     }
 }
